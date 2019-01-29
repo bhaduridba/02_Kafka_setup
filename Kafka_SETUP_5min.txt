@@ -1,0 +1,12 @@
+$ brew install zookeeper
+$ brew install kafka
+$ zkServer start
+$ nano /usr/local/etc/kafka/server.properties   -- Change advertised listener to localhost as 127.0.0.1 and uncomment
+echo stat | nc 127.0.0.1 2181
+echo mntr | nc 127.0.0.1 2181
+echo isro  | nc 127.0.0.1 2181
+zkServer status
+jps
+kafka-topics --create --zookeeper localhost:2181 --replication-factor 1 --partitions 1 --topic test1
+In one terminal write message —> kafka-console-producer --broker-list localhost:9092 --topic test1
+In 2nd terminal —> kafka-console-consumer --bootstrap-server localhost:9092 --topic Ikea1 --from-beginning
