@@ -7,6 +7,103 @@ echo mntr | nc 127.0.0.1 2181
 echo isro  | nc 127.0.0.1 2181
 zkServer status
 jps
-kafka-topics --create --zookeeper localhost:2181 --replication-factor 1 --partitions 1 --topic test1
-In one terminal write message —> kafka-console-producer --broker-list localhost:9092 --topic test1
-In 2nd terminal —> kafka-console-consumer --bootstrap-server localhost:9092 --topic Ikea1 --from-beginning
+./bin/kafka-topics.sh --create --zookeeper localhost:2181 --replication-factor 1 --partitions 1 --topic test1
+In one terminal consume message —> ./bin/kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic test1 --from-beginning
+In 2nd terminal produce message —> ./bin/kafka-console-producer.sh --broker-list localhost:9092 --topic test1 < /Users/sobe/ikea1.txt
+Stop Kafka server: Go to /usr/local/Cellar/kafka/2.1.0/libexec
+./bin/kafka-server-stop.sh config/server.properties
+Start Kafka server: ./bin/kafka-server-start.sh config/server.properties
+
+Find list of topics: ./bin/kafka-topics.sh --list --zookeeper localhost:2181
+
+Check performance metrics for Kafka producer:
+./bin/kafka-producer-perf-test.sh --topic test1 --num-records 50 --throughput 10 --record-size 10 --producer-props bootstrap.servers=localhost:9092 --print-metrics
+50 records sent, 10.030090 records/sec (0.00 MB/sec), 10.28 ms avg latency, 241.00 ms max latency, 5 ms 50th, 19 ms 95th, 241 ms 99th, 241 ms 99.9th.
+Metric Name                                                                         Value
+app-info:commit-id:{client-id=producer-1}                                         : 809be928f1ae004e
+app-info:version:{client-id=producer-1}                                           : 2.1.0
+kafka-metrics-count:count:{client-id=producer-1}                                  : 94.000
+producer-metrics:batch-size-avg:{client-id=producer-1}                            : 79.085
+producer-metrics:batch-size-max:{client-id=producer-1}                            : 129.000
+producer-metrics:batch-split-rate:{client-id=producer-1}                          : 0.000
+producer-metrics:batch-split-total:{client-id=producer-1}                         : 0.000
+producer-metrics:buffer-available-bytes:{client-id=producer-1}                    : 33554432.000
+producer-metrics:buffer-exhausted-rate:{client-id=producer-1}                     : 0.000
+producer-metrics:buffer-exhausted-total:{client-id=producer-1}                    : 0.000
+producer-metrics:buffer-total-bytes:{client-id=producer-1}                        : 33554432.000
+producer-metrics:bufferpool-wait-ratio:{client-id=producer-1}                     : 0.000
+producer-metrics:bufferpool-wait-time-total:{client-id=producer-1}                : 0.000
+producer-metrics:compression-rate-avg:{client-id=producer-1}                      : 1.000
+producer-metrics:connection-close-rate:{client-id=producer-1}                     : 0.000
+producer-metrics:connection-close-total:{client-id=producer-1}                    : 0.000
+producer-metrics:connection-count:{client-id=producer-1}                          : 2.000
+producer-metrics:connection-creation-rate:{client-id=producer-1}                  : 0.057
+producer-metrics:connection-creation-total:{client-id=producer-1}                 : 2.000
+producer-metrics:failed-authentication-rate:{client-id=producer-1}                : 0.000
+producer-metrics:failed-authentication-total:{client-id=producer-1}               : 0.000
+producer-metrics:incoming-byte-rate:{client-id=producer-1}                        : 96.190
+producer-metrics:incoming-byte-total:{client-id=producer-1}                       : 3348.000
+producer-metrics:io-ratio:{client-id=producer-1}                                  : 0.001
+producer-metrics:io-time-ns-avg:{client-id=producer-1}                            : 262827.193
+producer-metrics:io-wait-ratio:{client-id=producer-1}                             : 0.135
+producer-metrics:io-wait-time-ns-avg:{client-id=producer-1}                       : 31399862.000
+producer-metrics:io-waittime-total:{client-id=producer-1}                         : 4709979300.000
+producer-metrics:iotime-total:{client-id=producer-1}                              : 39424079.000
+producer-metrics:metadata-age:{client-id=producer-1}                              : 4.804
+producer-metrics:network-io-rate:{client-id=producer-1}                           : 2.873
+producer-metrics:network-io-total:{client-id=producer-1}                          : 100.000
+producer-metrics:outgoing-byte-rate:{client-id=producer-1}                        : 183.458
+producer-metrics:outgoing-byte-total:{client-id=producer-1}                       : 6386.000
+producer-metrics:produce-throttle-time-avg:{client-id=producer-1}                 : 0.000
+producer-metrics:produce-throttle-time-max:{client-id=producer-1}                 : 0.000
+producer-metrics:record-error-rate:{client-id=producer-1}                         : 0.000
+producer-metrics:record-error-total:{client-id=producer-1}                        : 0.000
+producer-metrics:record-queue-time-avg:{client-id=producer-1}                     : 0.319
+producer-metrics:record-queue-time-max:{client-id=producer-1}                     : 7.000
+producer-metrics:record-retry-rate:{client-id=producer-1}                         : 0.000
+producer-metrics:record-retry-total:{client-id=producer-1}                        : 0.000
+producer-metrics:record-send-rate:{client-id=producer-1}                          : 1.438
+producer-metrics:record-send-total:{client-id=producer-1}                         : 50.000
+producer-metrics:record-size-avg:{client-id=producer-1}                           : 95.000
+producer-metrics:record-size-max:{client-id=producer-1}                           : 95.000
+producer-metrics:records-per-request-avg:{client-id=producer-1}                   : 1.064
+producer-metrics:request-latency-avg:{client-id=producer-1}                       : 4.319
+producer-metrics:request-latency-max:{client-id=producer-1}                       : 12.000
+producer-metrics:request-rate:{client-id=producer-1}                              : 1.436
+producer-metrics:request-size-avg:{client-id=producer-1}                          : 127.720
+producer-metrics:request-size-max:{client-id=producer-1}                          : 184.000
+producer-metrics:request-total:{client-id=producer-1}                             : 50.000
+producer-metrics:requests-in-flight:{client-id=producer-1}                        : 0.000
+producer-metrics:response-rate:{client-id=producer-1}                             : 1.436
+producer-metrics:response-total:{client-id=producer-1}                            : 50.000
+producer-metrics:select-rate:{client-id=producer-1}                               : 4.286
+producer-metrics:select-total:{client-id=producer-1}                              : 150.000
+producer-metrics:successful-authentication-rate:{client-id=producer-1}            : 0.000
+producer-metrics:successful-authentication-total:{client-id=producer-1}           : 0.000
+producer-metrics:waiting-threads:{client-id=producer-1}                           : 0.000
+producer-node-metrics:incoming-byte-rate:{client-id=producer-1, node-id=node--1}  : 11.291
+producer-node-metrics:incoming-byte-rate:{client-id=producer-1, node-id=node-0}   : 84.985
+producer-node-metrics:incoming-byte-total:{client-id=producer-1, node-id=node--1} : 393.000
+producer-node-metrics:incoming-byte-total:{client-id=producer-1, node-id=node-0}  : 2955.000
+producer-node-metrics:outgoing-byte-rate:{client-id=producer-1, node-id=node--1}  : 1.724
+producer-node-metrics:outgoing-byte-rate:{client-id=producer-1, node-id=node-0}   : 181.928
+producer-node-metrics:outgoing-byte-total:{client-id=producer-1, node-id=node--1} : 60.000
+producer-node-metrics:outgoing-byte-total:{client-id=producer-1, node-id=node-0}  : 6326.000
+producer-node-metrics:request-latency-avg:{client-id=producer-1, node-id=node--1} : 0.000
+producer-node-metrics:request-latency-avg:{client-id=producer-1, node-id=node-0}  : 4.319
+producer-node-metrics:request-latency-max:{client-id=producer-1, node-id=node--1} : -Infinity
+producer-node-metrics:request-latency-max:{client-id=producer-1, node-id=node-0}  : 12.000
+producer-node-metrics:request-rate:{client-id=producer-1, node-id=node--1}        : 0.057
+producer-node-metrics:request-rate:{client-id=producer-1, node-id=node-0}         
+
+Check performance metrics for Kafka consumer:
+./bin//kafka-consumer-perf-test.sh \
+--messages 1000 \
+--broker-list=localhost:9092 \
+--topic test1 \
+--num-fetch-threads 10
+
+start.time, end.time, data.consumed.in.MB, MB.sec, data.consumed.in.nMsg, nMsg.sec, rebalance.time.ms, fetch.time.ms, fetch.MB.sec, fetch.nMsg.sec
+WARNING: Exiting before consuming the expected number of messages: timeout (10000 ms) exceeded. You can use the --timeout option to increase the timeout.
+2019-01-30 12:11:37:388, 2019-01-30 12:11:47:709, 0.0005, 0.0001, 53, 5.1352, 22, 10299, 0.0001, 5.1461
+
